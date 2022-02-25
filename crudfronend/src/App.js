@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useReducer, useEffect} from 'react';
+import React, {createContext, useContext, useReducer, useEffect, useRef, useState} from 'react';
 
 /*Creamos constante que se encargara de nuestro endPoint, el puerto 8080 es por donde se 
 exibe nuestro backend /api es nuestro contesto*/
@@ -9,30 +9,76 @@ const initialState = {
   list: []
 };
 /* Creamos Store como un contexto y le damos un estado inicial*/
-const Store = createContext(initialState);
+const Store = createContext(initialState)
 
 /* Creamos un metodo que servira como componente para crear un formulario basico */
 const Form = () => {
-  
-  return 
-    <form ref={formRef}>
+  /* Le damos funcionalidad al hook de react useRef()
+  que sirve para identificar las propiedades de un componente en especifico, en este caso
+  la referencia sera de formulario, lo inicializamos en null y el se crea cuando el componente es 
+  montado o pintado, cuadno es montado el carga sus propiedades y se puede usar*/
+  const formRef = useRef(null);
+
+  /* Usamos un contexto para usar el dispatch , el necesita un contexto */
+  const {dispatch} = useContext(Store);
+
+  /* Declaramos el useState*/
+  const [state, setState] = useState({})
+  /* Creamos el metodo onAdd como una funcion interna del componente formulario.
+  Este evento va a tener un request y va a tener un fetch que especifica que es un post*/
+  const onAdd = (event) => {
+    event.preventDefaul();
+
+    const request = {
+      name: state.name,
+      id: null,
+      isCompleted: false
+    };
+
+    /* Este fetch() especifica que es un POST, este POST recibe un body, este
+    body es el que preparamos con la funcion request. el headers especifica que va a transportar un json
+    a travez de la red, luego mapea a json, luego obtiene el todo que es el objeto en particula.
+    despues dispatch o despacha el evento dependiendo del contexto y luego usamos el setState que es un hook
+    muy utilizado que nos permite tener estados internos dentro de componentes
+    */
+    fetch(HOST_API + "/todo", {
+      method: "POST",
+      body: JSON.stringify(request),
+      headers: {
+        'Content-Type' : 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then((todo) => {
+        dispatch({type: "add-item" , 
+                  item: todo});
+        setState({name: ""});
+        formRef.current.reset();
+      });
+
+  }
+
+  return <form ref={formRef}>
       <input type="text" 
             name = "name"
-            onChange={(event) =>{
+            onChange={(event) =>{ {/* El evento onChange esta pendiente de la digitacion del usuario*/}
             setState({...state, name: event.target.value })
             }} ></input>
 
-      <input type="text" 
-            name = "description"
-            onChange={(event) =>{
-            setState({...state, description: event.target.value })
-            }} ></input>
       <button onClick={onAdd}>Agregar</button>
     </form>
 }
 /*Creamos funcion arrow donde nos retornara un listado en particular,
 nos sirve para listar toda la informacion */
 const  List = () => {
+  /*Utulizamos useContext que es del concepto de hooks en react que sirve para trabajar
+    con mecanismos internos de react, utilizamos como contexto un store, pueden haber diferentes 
+    contextos, en este contexto store lo usaremos para almacenar los diferentes estados internos
+    de la aplicación
+
+  */
+    const {dispatch, state} = useContext(Store);
+
     /* UseEffect nos va a permitir trabajar en backGround (No bloquea el render)
       para no bloquear cuando obtenga la consulta, dentor tenemos:
       fetch : es basicamente una forma de poder consultar algo por hattp o recursos en 
@@ -43,16 +89,15 @@ const  List = () => {
       objetos dentro del backent
 
     */
-   useEffect(() => {
-      fetch(HOST_API + "/todos")
+    useEffect(() => {
+      fetch(HOST_API + "/todo")
       .then(response => response.json())
-      .then((List) => {
-        dispatch({type: "update-list" , List})
+      .then((list) => {
+        dispatch({type: "update-list" , list})
       })
     }, [state.list.length, dispatch]);  //Esta linea es una condicion o regla del useEffect y es que la lista debe tener valores
   
-  return
-  <div>
+  return<div>
     <table>
       <tr>
         <td>ID</td>
@@ -93,14 +138,6 @@ function reducer(state, action) {
   }
 }
 
-/*Utulizamos useContext que es del concepto de hooks en react que sirve para trabajar
-    con mecanismos internos de react, utilizamos como contexto un store, pueden haber diferentes 
-    contextos, en este contexto store lo usaremos para almacenar los diferentes estados internos
-    de la aplicación
-
-  */
-const { dispatch, state} = useContext(Store);
-
 /* Dentro de nuestro contexto debemos dener un provider, este nos va a servir para
 poder conectar entre si diferentes componentes */
 const StoreProvider = ({ children}) => {
@@ -119,13 +156,15 @@ orientado a una acción, el StoreProvider se inyectara en APP() como un contened
      </Store.Provider>
 }
 
-
 function App() {
   return (
-    <Store.Provider>
-      <List/>
-    </Store.Provider>
+    <StoreProvider>
+      <Form />
+      <List />
+    </StoreProvider>
+
   );
 }
 
 export default App;
+

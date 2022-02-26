@@ -114,6 +114,9 @@ const List = () => {
       dispatch({ type: "delete-item", id})
     })
   }
+  const onEdit = (todo) => {
+    dispatch({ type: "edit-item", item: todo})
+  };
 
 
    return <div>

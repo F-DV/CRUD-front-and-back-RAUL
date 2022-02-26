@@ -169,13 +169,3 @@ i
 9.idea/libraries/Maven__org_xmlunit_xmlunit_core_2_8_4.xml,9\2\92caafdd2526018d01191b6da5b57a33c45dfab0
 s
 C.idea/libraries/Maven__org_springframework_spring_webmvc_5_3_16.xml,d\8\d838a6fef1f9496ca3c3310d47948347bafce9ce
-‚
-RcrudBackend/src/main/java/co/com/CRUD/RAUL/crudBackend/CrudBackendApplication.java,f\2\f25730fb4da2a3691b720845c4e48b774d697782
-p
-@crudBackend/src/main/java/co/com/CRUD/RAUL/crudBackend/Todo.java,8\c\8c685e04b926e9612f76baf8003d599e77d7514a
-w
-GcrudBackend/src/main/java/co/com/CRUD/RAUL/crudBackend/TodoService.java,9\c\9c0c18515717a8daf42d972253110239fc981f4c
-z
-JcrudBackend/src/main/java/co/com/CRUD/RAUL/crudBackend/TodoRepository.java,6\a\6af021d51efe3e76a479bb47388a9bc18aed7e1d
-z
-JcrudBackend/src/main/java/co/com/CRUD/RAUL/crudBackend/TodoController.java,5\e\5e6631e0c32d54713598a4696b6e0f7862ad6d13

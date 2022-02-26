@@ -6,7 +6,8 @@ const HOST_API = "http://localhost:8080/api";
 
 /* Variables iniciales para el contexto que sera un array de lista vacia*/
 const initialState ={
-  list: []
+  list: [],
+  item: {}
 };
 
 /* Creamos Store como un contexto y le damos un estado inicial*/
@@ -22,10 +23,12 @@ const Form = () => {
   const formRef = useRef(null);
 
   /* Usamos un contexto para usar el dispatch , el necesita un contexto */
-  const {dispatch} = useContext(Store);
+  const {dispatch, state: {item}} = useContext(Store);
+
+
 
   /* Declaramos el useState*/
-  const [state, setState] = useState({});
+  const [state, setState] = useState({item});
 
   /* Creamos el metodo onAdd como una funcion interna del componente formulario.
   Este evento va a tener un request y va a tener un fetch que especifica que es un post*/
@@ -60,12 +63,38 @@ const Form = () => {
     });
   }
 
+  /* Metodo para editar items*/
+  const onEdit = (event) => {
+    event.preventDefault();
+
+    const request = {
+      name: state.name,
+      id: item.id,
+      isComplete: item.isComplete
+    };
+
+    fetch(HOST_API+"/todo", {
+      method: "PUT",
+      body: JSON.stringify(request),
+      headers: { 
+        'Content-Type': 'application/json'
+      }
+    }) 
+    .then(response => response.json())
+    .then((todo) => { //el todo es el objeto
+      dispatch({type: "update-item", item: todo});
+      setState({name: ""});//se borran los campos dentro del fpormulario
+      formRef.current.reset();
+    });
+  }
+
 
   return <form ref={formRef}>
-    <input type="text" name="name" onChange={(event) => {
+    <input type="text" name="name" defaulValue={item.name} onChange={(event) => {
       setState({...state, name: event.target.value})
     }}></input>
     <button onClick={onAdd}>Agregar</button>
+    <button onClick={onEdit}>Editar</button>
 
   </form>
 
@@ -112,7 +141,7 @@ const List = () => {
     })
     then((list) => {
       dispatch({ type: "delete-item", id})
-    })
+    }) 
   }
   const onEdit = (todo) => {
     dispatch({ type: "edit-item", item: todo})

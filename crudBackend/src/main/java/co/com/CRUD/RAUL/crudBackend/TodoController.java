@@ -42,7 +42,7 @@ public class TodoController {
      * @param todo
      * @return : el todo_ actualizado
      */
-    @PostMapping(value = "api/todoo")
+    @PutMapping(value = "api/todo")
     public Todo update(@RequestBody Todo todo){
 
         /*

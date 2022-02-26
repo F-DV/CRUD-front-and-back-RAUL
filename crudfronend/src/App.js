@@ -90,7 +90,7 @@ const Form = () => {
 
 
   return <form ref={formRef}>
-    <input type="text" name="name" defaulValue={item.name} onChange={(event) => {
+    <input type="text" name="name" defaultValue={item.name} onChange={(event) => {
       setState({...state, name: event.target.value})
     }}></input>
     {/**Condicionales , si el item existe entonces el boton que sale es Actualizar , si no existe sale el boton Agregar */}
@@ -165,9 +165,9 @@ const List = () => {
         return <tr key={todo.id}>
           <td>{todo.id}</td>
           <td>{todo.name}</td>
-          <td>{todo.isCompleted}</td>
+          <td>{todo.isCompleted === true ? "SI" : "NO"}</td>
           <td><button onClick={() => onDelete(todo.id)}>Eliminar</button></td>
-          <td><button onClick={() => onEdit(todo.id)}>Editar</button></td>
+          <td><button onClick={() => onEdit(todo)}>Editar</button></td>
           
         </tr>
       })}

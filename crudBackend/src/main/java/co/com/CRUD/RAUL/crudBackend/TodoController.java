@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000/")                                  //Especificamos el localhost del frontend
+@CrossOrigin(origins = "http://localhost:3000")                                 //Especificamos el localhost del frontend
 public class TodoController {
 
     /**
@@ -42,7 +42,7 @@ public class TodoController {
      * @param todo
      * @return : el todo_ actualizado
      */
-    @PostMapping(value = "api/todo")
+    @PostMapping(value = "api/todoo")
     public Todo update(@RequestBody Todo todo){
 
         /*
@@ -50,7 +50,7 @@ public class TodoController {
             y no modificará
         */
         if(todo.getId() != null){
-
+            return service.save(todo);
         }
         throw new RuntimeException("No existe el usuario a actualizar");
     }

@@ -41,7 +41,7 @@ const Form = () => {
     despues dispatch o despacha el evento dependiendo del contexto y luego usamos el setState que es un hook
     muy utilizado que nos permite tener estados internos dentro de componentes
     */
-    fetch(HOST_API + "/todo", {
+    fetch(HOST_API +"/todo", {
       method: "POST",
       body: JSON.stringify(request),
       headers: {
@@ -52,7 +52,7 @@ const Form = () => {
       .then((todo) => {
         dispatch({type: "add-item" , 
                   item: todo});
-        setState({name: ""});
+        setState({name: ""}); //se borran los campos dentro del fpormulario
         formRef.current.reset();
       });
 
@@ -61,7 +61,7 @@ const Form = () => {
   return <form ref={formRef}>
       <input type="text" 
             name = "name"
-            onChange={(event) =>{ {/* El evento onChange esta pendiente de la digitacion del usuario*/}
+            onChange={(event) =>{ 
             setState({...state, name: event.target.value })
             }} ></input>
 
@@ -90,7 +90,7 @@ const  List = () => {
 
     */
     useEffect(() => {
-      fetch(HOST_API + "/todo")
+      fetch(HOST_API + "/todos")
       .then(response => response.json())
       .then((list) => {
         dispatch({type: "update-list" , list})

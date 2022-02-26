@@ -10,6 +10,7 @@ public class Todo {
     @Id
     @GeneratedValue                     //Anotacion para auto generacion de Id
     private Long id;
+
     private String name;
     private boolean isCompleted;
 

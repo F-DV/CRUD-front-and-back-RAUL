@@ -63,7 +63,7 @@ const Form = () => {
 
   return <form ref={formRef}>
     <input type="text" name="name" onChange={(event) => {
-      setState({...state, description: event.target.value})
+      setState({...state, name: event.target.value})
     }}></input>
     <button onClick={onAdd}>Agregar</button>
 

@@ -93,8 +93,11 @@ const Form = () => {
     <input type="text" name="name" defaulValue={item.name} onChange={(event) => {
       setState({...state, name: event.target.value})
     }}></input>
-    <button onClick={onAdd}>Agregar</button>
-    <button onClick={onEdit}>Editar</button>
+    {/**Condicionales , si el item existe entonces el boton que sale es Actualizar , si no existe sale el boton Agregar */}
+    {item.id && <button onClick={onEdit}>Actualizar</button> }
+    {!item.id && <button onClick={onAdd}>Agregar</button>}
+    
+    
 
   </form>
 
@@ -180,8 +183,19 @@ la accion se evalua para saber el tipo y una vez identificado ese tipo , realiza
 la accion correspondiente y va a tener un body, playload o contenido.*/
 function reducer(state, action) {
   switch(action.type) {
+
+    /*El caso 'update-item' lo que hace es que recorre toda la lista , si encuentra el item de la accion,. lo actualiza o mapea y si no 
+    los deja igual */
+    case 'update-item':
+      const listUpdateEdit = state.list.map((item) => {
+        if(item.id === action.item.id){
+          return action.item;
+        }
+        return item;
+      });
+      return {...state, list: listUpdateEdit, item: {}}  
     case 'delete-item':
-      const listUpdate = state.filter((item) => {
+      const listUpdate = state.list.filter((item) => {
         return item.id != action.id;
       });
       return {...state, list: listUpdate}

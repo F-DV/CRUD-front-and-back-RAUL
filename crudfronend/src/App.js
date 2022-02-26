@@ -104,6 +104,17 @@ const List = () => {
     
   }, [state.list.length, dispatch]);//Esta linea es una condicion o regla del useEffect y es que la lista debe tener valores
 
+  /* Le damos funcionalidad al metodo cuando el usuario presione el boton eliminar, le enviamos el id del item a eliminar,
+    luego activamos la tura host para elimianr el item del backend y activamos el reducer para actualizar la lista mostrada */
+  const onDelete = (id) => {
+    fetch(HOST_API + "/"+id+"/todo", {
+      method: "DELETE"
+    })
+    then((list) => {
+      dispatch({ type: "delete-item", id})
+    })
+  }
+
 
    return <div>
   <table>

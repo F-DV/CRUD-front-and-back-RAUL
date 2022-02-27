@@ -141,9 +141,9 @@ const List = () => {
     luego activamos la tura host para elimianr el item del backend y activamos el reducer para actualizar la lista mostrada */
   const onDelete = (id) => {
     fetch(HOST_API + "/"+id+"/todo", {
-      method: "DELETE"
+      method: "DELETE",
     })
-    then((list) => {
+    .then((list) => {
       dispatch({ type: "delete-item", id})
     }) 
   }
@@ -197,7 +197,7 @@ function reducer(state, action) {
       return {...state, list: listUpdateEdit, item: {}}  
     case 'delete-item':
       const listUpdate = state.list.filter((item) => {
-        return item.id != action.id;
+        return item.id !== action.id;
       });
       return {...state, list: listUpdate}
     case 'update-list':

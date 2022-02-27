@@ -61,7 +61,7 @@ public class TodoController {
      * @param id : id asociado al todo_ que queremos eliminar
      */
     @DeleteMapping(value = "api/{id}/todo")
-    public void delete(@PathParam("id") Long id){
+    public void delete(@PathVariable("id") Long id){
         service.delete(id);
 
     }

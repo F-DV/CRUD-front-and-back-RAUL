@@ -35,6 +35,7 @@ const Form = () => {
   const onAdd = (event) => {
     event.preventDefault();
 
+    /* request en formato json*/
     const request = {
       name: state.name,
       id: null,
@@ -42,11 +43,11 @@ const Form = () => {
     };
 
     
-        /* Este fetch() especifica que es un POST, este POST recibe un body, este
+        /* Este fetch() especifica que es un POST, este POST recibe un body en formato json, este
     body es el que preparamos con la funcion request. el headers especifica que va a transportar un json
-    a travez de la red, luego mapea a json, luego obtiene el todo que es el objeto en particula.
+    a travez de la red, luego mapea a json, luego obtiene el {todo} que es el objeto en particular.
     despues dispatch o despacha el evento dependiendo del contexto y luego usamos el setState que es un hook
-    muy utilizado que nos permite tener estados internos dentro de componentes
+    muy utilizado que nos permite tener estados internos dentro de componentes,m en este caso lo usamos para borrar el campo del formulario
     */
     fetch(HOST_API+"/todo", {
       method: "POST",
@@ -83,7 +84,7 @@ const Form = () => {
     .then(response => response.json())
     .then((todo) => { //el todo es el objeto
       dispatch({type: "update-item", item: todo});
-      setState({name: ""});//se borran los campos dentro del fpormulario
+      setState({name: ""});//se borran los campos dentro del formulario
       formRef.current.reset();
     });
   }
@@ -117,7 +118,7 @@ const List = () => {
   const {dispatch, state} = useContext(Store);
 
       /* UseEffect nos va a permitir trabajar en backGround (No bloquea el render)
-      para no bloquear cuando obtenga la consulta, dentor tenemos:
+      para no bloquear cuando obtenga la consulta, dentro tenemos:
       fetch : es basicamente una forma de poder consultar algo por hattp o recursos en 
       la web en general, es una promesa de javascript que se neceista resolver, con el
       primer then resolvemos la promera y con el .json parseamos a tipo json para poder ser tratado,
